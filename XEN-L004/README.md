@@ -97,6 +97,7 @@ Initializes the module and reads the UID of a detected card
 - [in] IRQ :: port — A port number used by the module to indicate that an NFC tag detected
 - [in] SCAN :: pulse = Continuously — Triggers scan for an NFC tag
 - [out] UID :: nfc-uid — The UID of a readed NFC tag
+- [out] TAG :: bool — True when the most recent scan detected an NFC tag
 - [out] OK :: pulse — Fires on successful reading
 - [out] ERR :: pulse — Fires if there is no NFC tag
 
