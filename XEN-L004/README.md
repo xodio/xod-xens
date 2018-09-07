@@ -42,7 +42,7 @@ Support for RFID/NFC modules based on a PN532 chip.
 ### pn532-device
 Constructs an instance of an RFID/NFC module, based on a PN532 chip.
 
-- [in] IRQ :: Port — A port number for the interrupt request
+- [in] IRQ :: Port — A port number used by the module to indicate that an NFC tag detected
 - [out] DEV :: pn532-device
 
 ### init
@@ -94,7 +94,7 @@ To write data to a tag it should be paired first (use `pair-tag`)
 A quick-start node which represents an RFID/NFC module.
 Initializes the module and reads the UID of a detected card
 
-- [in] IRQ :: port — A port number for the interrupt request
+- [in] IRQ :: port — A port number used by the module to indicate that an NFC tag detected
 - [in] SCAN :: pulse = Continuously — Triggers scan for an NFC tag
 - [out] UID :: nfc-uid — The UID of a readed NFC tag
 - [out] OK :: pulse — Fires on successful reading
