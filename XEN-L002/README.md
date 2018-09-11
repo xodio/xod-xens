@@ -24,9 +24,9 @@ Type seconds;
 
 Constructs a datetime value from a year, month, day, hour, minute, and second
 
-- [in] YEAR :: Number — Year value in range [1970, 2038]
-- [in] MON :: Number — Month value in range [1, 12] 
-- [in] DAY :: Number — Days value in range [1, 28-31]
+- [in] YEAR :: Number = 1970 — Year value in range [1970, 2105]
+- [in] MON :: Number = 1 — Month value in range [1, 12] 
+- [in] DAY :: Number = 1 — Days value in range [1, 28-31]
 - [in] HOUR :: Number — Hours value in range [0, 23]
 - [in] MIN :: Number — Minutes value in range [0, 59] 
 - [in] SEC :: Number — Seconds value in range [0, 59]
