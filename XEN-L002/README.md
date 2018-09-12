@@ -39,7 +39,7 @@ Destructs a datetime value into a year, month, day, weekday, hour, minute, and s
 
 - [in] :: datetime
 
-- [out] YEAR :: Number — Year value in range [1970, 2038]
+- [out] YEAR :: Number — Year value in range [1970, 2105]
 - [out] MON :: Number — Month value in range [1, 12] 
 - [out] DAY :: Number — Days value in range [1, 28-31]
 - [out] WD :: Number — Day of the week value in range [1, 7]. Count starts from Monday 
