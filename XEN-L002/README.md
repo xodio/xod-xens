@@ -1,3 +1,9 @@
+---
+status: closed
+champion: https://xod.io/users/gabbapeople
+issue: https://github.com/xodio/xod/pull/1436
+---
+
 # XEN-L002: Datetime library
 
 XOD should provide a library which operates with the concept of date and time.

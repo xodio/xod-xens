@@ -1,3 +1,8 @@
+---
+status: draft
+champion: https://xod.io/users/nkrkv
+---
+
 # XEN-F001: Enums
 
 Enumerations are common in the programming world. Most languages provide either built-in facilities for defining enum types or recommendations for emulating them. While some languages provide very basic support which is a layer on top of numbers or strings (C, Python), other languages offer powerful ADT (Algebraic Data Types) systems where an enum item can carry some additional payload.
