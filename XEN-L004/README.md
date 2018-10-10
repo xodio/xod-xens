@@ -1,3 +1,9 @@
+---
+status: closed
+champion: https://xod.io/users/brusher
+issue: https://github.com/xodio/xod/pull/1434
+---
+
 # XEN-L004: PN532 library
 
 Some xoders may want to use RFID/NFC reader in their projects.

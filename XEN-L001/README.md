@@ -1,3 +1,8 @@
+---
+status: draft
+champion: https://xod.io/users/nkrkv
+---
+
 # XEN-L001: Color library
 
 Many hardware projects involve some light effects. To achieve the effects various colorful LEDs and LED strips are widely used. Color is not a trivial scalar. Several notations exist to define a color. For example RGB, HSV, and HSL. XOD should provide a standard library to hold and transfer color values so that library authors don’t reinvent color-related nodes again and again.

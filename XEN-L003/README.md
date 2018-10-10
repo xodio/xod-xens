@@ -1,3 +1,9 @@
+---
+status: closed
+champion: https://xod.io/users/gabbapeople
+issue: https://github.com/xodio/xod/pull/1438
+---
+
 # XEN-L003: RTC Device Library
 
 XOD should provide a library which includes nodes for hardware devices that operate time and date (RTC devices).
