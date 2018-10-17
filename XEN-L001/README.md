@@ -19,11 +19,35 @@ struct Type {
 };
 ```
 
-@TODO: Does adding the fourth byte as a padding improves performance on 32-bit MCUs?
-
 ## Nodes
 
 ### color
+
+(utility) Color type constructor.
+
+### color-rgb-bytes
+
+Constructs a color value from red, green, and blue components expressed as byte values. Use decimal (0d to 255d) or hexadecimal (00h to FFh) byte literals. For example, if a graphical editor shows a blue as “#287ec9” or “rgb(40, 126, 201)” use the following literals for R/G/B: 28h/7Eh/C9h or 40d/126d/201d.
+
+| Dir | Pin  | Type    | Default | Description
+| --- | ---- | ------- | ------- | -----------
+| in  | R    | byte    | 0d      | Red
+| in  | G    | byte    | 0d      | Green
+| in  | B    | byte    | 0d      | Blue
+| out |      | color   |         |
+
+### to-rgb-bytes
+
+Destructs a color value into red, green, and blue components encoded as byte values.
+
+| Dir | Pin  | Type    | Default | Description
+| --- | ---- | ------- | ------- | -----------
+| in  |      | color   |         |
+| out | R    | byte    |         | Red
+| out | G    | byte    |         | Green
+| out | B    | byte    |         | Blue
+
+### color-rgb
 
 Constructs a color value from red, green, and blue components. Each component should be in the range [0, 1]. Values out of this range are truncated to 0 or 1.
 
@@ -63,7 +87,7 @@ Destructs a color value to hue, saturation, and lightness values. See `color-hsl
 - [out] S :: Number — Saturation
 - [out] L :: Number — Lightness
 
-### format-hex
+### format-color
 
 Formats a color as a 6-digit hexadecimal value (ex.: "FF3300").
 
