@@ -1,0 +1,769 @@
+{
+  "name": "",
+  "patches": {
+    "@/color": {
+      "attachments": [
+        {
+          "content": "\nstruct State {\n};\n\nstruct Type {\n    uint8_t r, g, b;\n};\n\n// clang-format off\n{{ GENERATED_CODE }}\n// clang-format on\n\nvoid evaluate(Context ctx) {\n    Type color;\n    emitValue<output_OUT>(ctx, color);\n}\n\n",
+          "encoding": "utf-8",
+          "filename": "patch.cpp"
+        }
+      ],
+      "description": "Color type constructor",
+      "nodes": {
+        "HJ53--ss7": {
+          "id": "HJ53--ss7",
+          "position": {
+            "x": 0,
+            "y": 102
+          },
+          "type": "xod/patch-nodes/output-self"
+        },
+        "Hyec-WssX": {
+          "id": "Hyec-WssX",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "SymqbZjiQ": {
+          "id": "SymqbZjiQ",
+          "position": {
+            "x": 68,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/utility"
+        }
+      },
+      "path": "@/color"
+    },
+    "@/color-hsl": {
+      "attachments": [
+        {
+          "content": "\nstruct State {\n};\n\n// clang-format off\n{{ GENERATED_CODE }}\n// clang-format on\n\nfloat HueToRGB(float v1, float v2, float vH) {\n\n\tif (vH < 0)\n\t\tvH += 1;\n\n\tif (vH > 1)\n\t\tvH -= 1;\n\n\tif ((6 * vH) < 1)\n\t\treturn (v1 + (v2 - v1) * 6 * vH);\n\n\tif ((2 * vH) < 1)\n\t\treturn v2;\n\n\tif ((3 * vH) < 2)\n\t\treturn (v1 + (v2 - v1) * ((2.0f / 3) - vH) * 6);\n\n\treturn v1;\n}\n\nvoid evaluate(Context ctx){\n\n    float H = 360 * getValue<input_H>(ctx);\n    float S = getValue<input_S>(ctx);\n    float L = getValue<input_L>(ctx);\n\n    uint8_t r, g, b;\n\n    if (S == 0) {\n        r = g = b = L * 255;\n    } else {\n        \n        float hue = (float) H / 360;\n        float v2 = (L < 0.5) ? (L * (1 + S)) : ((L + S) - (L * S));\n\t\tfloat v1 = 2 * L - v2;\n\n\t\tr = (uint8_t)(255 * HueToRGB(v1, v2, hue + (1.0f / 3)));\n\t\tg = (uint8_t)(255 * HueToRGB(v1, v2, hue));\n\t\tb = (uint8_t)(255 * HueToRGB(v1, v2, hue - (1.0f / 3)));\n    }\n\n    ValueType<output_OUT>::T obj;\n    obj = { r, g, b };\n    emitValue<output_OUT>(ctx, obj);\n}\n",
+          "encoding": "utf-8",
+          "filename": "patch.cpp"
+        }
+      ],
+      "description": "Constructs a color value from hue, saturation, and lightness values (HSL model)",
+      "nodes": {
+        "BJyghZosm": {
+          "id": "BJyghZosm",
+          "position": {
+            "x": 0,
+            "y": 204
+          },
+          "type": "@/output-color"
+        },
+        "HJgyhboim": {
+          "description": "0 is for red, 0.33 for green, 0.66 for blue, and 0.99 is for red again. Some systems use degrees for the hue component. The value of 1.0 corresponds to 360° of such systems. When out out of [0; 1) range only the fractional part is taken into account",
+          "id": "HJgyhboim",
+          "label": "H",
+          "position": {
+            "x": -1,
+            "y": -1
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "Hks1nZioQ": {
+          "id": "Hks1nZioQ",
+          "position": {
+            "x": 0,
+            "y": 102
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "Symyhboj7": {
+          "boundLiterals": {
+            "__out__": "1"
+          },
+          "description": "Saturation. Should be in the range [0, 1]. 0.0 corresponds to fully-gray shade and 1.0 to saturated color shade. Values out of the range are truncated to 0 or 1",
+          "id": "Symyhboj7",
+          "label": "S",
+          "position": {
+            "x": 68,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "r1g7J3-ii7": {
+          "boundLiterals": {
+            "__out__": "0.5"
+          },
+          "description": "Lightness. Should be in the range [0, 1]. 0.0 corresponds to black; 0.5 to pure color; 1.0 to white. Values out of the range are truncated to 0 or 1",
+          "id": "r1g7J3-ii7",
+          "label": "L",
+          "position": {
+            "x": 136,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-number"
+        }
+      },
+      "path": "@/color-hsl"
+    },
+    "@/color-rgb": {
+      "description": "Constructs a color value from red, green, and blue components. Each component should be in the range [0, 1]. Values out of this range are truncated to 0 or 1",
+      "links": {
+        "BJK95Wos7": {
+          "id": "BJK95Wos7",
+          "input": {
+            "nodeId": "SkqnPZjsX",
+            "pinKey": "rktX7OWyX"
+          },
+          "output": {
+            "nodeId": "BkE95WojQ",
+            "pinKey": "rJFmgJehW"
+          }
+        },
+        "BkwY9-is7": {
+          "id": "BkwY9-is7",
+          "input": {
+            "nodeId": "HyS2vZsoX",
+            "pinKey": "rktX7OWyX"
+          },
+          "output": {
+            "nodeId": "HJdd5Zio7",
+            "pinKey": "rJFmgJehW"
+          }
+        },
+        "Byu9qWio7": {
+          "id": "Byu9qWio7",
+          "input": {
+            "nodeId": "BkE95WojQ",
+            "pinKey": "HJjEe1lnb"
+          },
+          "output": {
+            "nodeId": "S1yKPZjjQ",
+            "pinKey": "__out__"
+          }
+        },
+        "H1lpwWjom": {
+          "id": "H1lpwWjom",
+          "input": {
+            "nodeId": "SyB5PWio7",
+            "pinKey": "rkhfmWojX"
+          },
+          "output": {
+            "nodeId": "SkqnPZjsX",
+            "pinKey": "By_EX_bk7"
+          }
+        },
+        "Hko59bjo7": {
+          "id": "Hko59bjo7",
+          "input": {
+            "nodeId": "SJjhvWjiQ",
+            "pinKey": "rktX7OWyX"
+          },
+          "output": {
+            "nodeId": "ryx4c9Wjj7",
+            "pinKey": "rJFmgJehW"
+          }
+        },
+        "S1_tqboi7": {
+          "id": "S1_tqboi7",
+          "input": {
+            "nodeId": "HJdd5Zio7",
+            "pinKey": "HJjEe1lnb"
+          },
+          "output": {
+            "nodeId": "HyquDboo7",
+            "pinKey": "__out__"
+          }
+        },
+        "SJ1pw-oi7": {
+          "id": "SJ1pw-oi7",
+          "input": {
+            "nodeId": "SyB5PWio7",
+            "pinKey": "S1Df7Wso7"
+          },
+          "output": {
+            "nodeId": "HyS2vZsoX",
+            "pinKey": "By_EX_bk7"
+          }
+        },
+        "Skq95-oom": {
+          "id": "Skq95-oom",
+          "input": {
+            "nodeId": "ryx4c9Wjj7",
+            "pinKey": "HJjEe1lnb"
+          },
+          "output": {
+            "nodeId": "ryxkYD-joQ",
+            "pinKey": "__out__"
+          }
+        },
+        "SyL5vbii7": {
+          "id": "SyL5vbii7",
+          "input": {
+            "nodeId": "Skk5DZsiQ",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "SyB5PWio7",
+            "pinKey": "S1f7XZij7"
+          }
+        },
+        "rJSTPWis7": {
+          "id": "rJSTPWis7",
+          "input": {
+            "nodeId": "SyB5PWio7",
+            "pinKey": "Hklnz7WjoQ"
+          },
+          "output": {
+            "nodeId": "SJjhvWjiQ",
+            "pinKey": "By_EX_bk7"
+          }
+        }
+      },
+      "nodes": {
+        "BkE95WojQ": {
+          "boundLiterals": {
+            "B1rSeJlnZ": "1",
+            "HkFBgJehW": "255"
+          },
+          "id": "BkE95WojQ",
+          "position": {
+            "x": 68,
+            "y": 102
+          },
+          "type": "xod/math/map-clip"
+        },
+        "HJdd5Zio7": {
+          "boundLiterals": {
+            "B1rSeJlnZ": "1",
+            "HkFBgJehW": "255"
+          },
+          "id": "HJdd5Zio7",
+          "position": {
+            "x": -136,
+            "y": 102
+          },
+          "type": "xod/math/map-clip"
+        },
+        "HyS2vZsoX": {
+          "id": "HyS2vZsoX",
+          "position": {
+            "x": -136,
+            "y": 204
+          },
+          "type": "xod/bits/number-to-u8"
+        },
+        "HyquDboo7": {
+          "description": "Red",
+          "id": "HyquDboo7",
+          "label": "R",
+          "position": {
+            "x": -136,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "S1yKPZjjQ": {
+          "description": "Green",
+          "id": "S1yKPZjjQ",
+          "label": "G",
+          "position": {
+            "x": 68,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-number"
+        },
+        "SJjhvWjiQ": {
+          "id": "SJjhvWjiQ",
+          "position": {
+            "x": 272,
+            "y": 204
+          },
+          "type": "xod/bits/number-to-u8"
+        },
+        "Skk5DZsiQ": {
+          "id": "Skk5DZsiQ",
+          "position": {
+            "x": 34,
+            "y": 408
+          },
+          "type": "@/output-color"
+        },
+        "SkqnPZjsX": {
+          "id": "SkqnPZjsX",
+          "position": {
+            "x": 68,
+            "y": 204
+          },
+          "type": "xod/bits/number-to-u8"
+        },
+        "SyB5PWio7": {
+          "id": "SyB5PWio7",
+          "position": {
+            "x": 34,
+            "y": 306
+          },
+          "type": "@/color-rgb-bytes"
+        },
+        "ryx4c9Wjj7": {
+          "boundLiterals": {
+            "B1rSeJlnZ": "1",
+            "HkFBgJehW": "255"
+          },
+          "id": "ryx4c9Wjj7",
+          "position": {
+            "x": 272,
+            "y": 102
+          },
+          "type": "xod/math/map-clip"
+        },
+        "ryxkYD-joQ": {
+          "description": "Blue",
+          "id": "ryxkYD-joQ",
+          "label": "B",
+          "position": {
+            "x": 272,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-number"
+        }
+      },
+      "path": "@/color-rgb"
+    },
+    "@/color-rgb-bytes": {
+      "attachments": [
+        {
+          "content": "\nstruct State {\n};\n\n// clang-format off\n{{ GENERATED_CODE }}\n// clang-format on\n\nvoid evaluate(Context ctx) {\n    ValueType<output_OUT>::T obj;\n    obj = { (uint8_t)getValue<input_R>(ctx), (uint8_t)getValue<input_G>(ctx), (uint8_t)getValue<input_B>(ctx) };\n    emitValue<output_OUT>(ctx, obj);\n}\n",
+          "encoding": "utf-8",
+          "filename": "patch.cpp"
+        }
+      ],
+      "description": "Constructs a color value from red, green, and blue components expressed as byte values. Use decimal (0d to 255d) or hexadecimal (00h to FFh) byte literals. For example, if a graphical editor shows a blue as “#287ec9” or “rgb(40, 126, 201)” use the following literals for R/G/B: 28h/7Eh/C9h or 40d/126d/201d",
+      "nodes": {
+        "BkNQ7-oom": {
+          "id": "BkNQ7-oom",
+          "position": {
+            "x": 0,
+            "y": 102
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        },
+        "Hklnz7WjoQ": {
+          "description": "Blue",
+          "id": "Hklnz7WjoQ",
+          "label": "B",
+          "position": {
+            "x": 136,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-byte"
+        },
+        "S1Df7Wso7": {
+          "description": "Red",
+          "id": "S1Df7Wso7",
+          "label": "R",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-byte"
+        },
+        "S1f7XZij7": {
+          "id": "S1f7XZij7",
+          "position": {
+            "x": 0,
+            "y": 204
+          },
+          "type": "@/output-color"
+        },
+        "rkhfmWojX": {
+          "description": "Green",
+          "id": "rkhfmWojX",
+          "label": "G",
+          "position": {
+            "x": 68,
+            "y": 0
+          },
+          "type": "xod/patch-nodes/input-byte"
+        }
+      },
+      "path": "@/color-rgb-bytes"
+    },
+    "@/format-color": {
+      "attachments": [
+        {
+          "content": "\nstruct State {\n    char str[7] = { 0, 0, 0, 0, 0, 0, '\\0' };\n    CStringView view;\n    State() : view(str) { }\n};\n\n// clang-format off\n{{ GENERATED_CODE }}\n// clang-format on\n\nchar nibbleToChar(uint8_t nibble) {\n  return (nibble < 10)\n    ? '0' + nibble\n    : 'a' + nibble - 10;\n}\n\nvoid evaluate(Context ctx) {\n    auto state = getState(ctx);\n    auto color = getValue<input_IN>(ctx);\n\n    state->str[0] = nibbleToChar(color.r >> 4);\n    state->str[1] = nibbleToChar(color.r & 0x0F);\n    state->str[2] = nibbleToChar(color.g >> 4);\n    state->str[3] = nibbleToChar(color.g & 0x0F);\n    state->str[4] = nibbleToChar(color.b >> 4);\n    state->str[5] = nibbleToChar(color.b & 0x0F);\n\n    emitValue<output_OUT>(ctx, XString(&state->view));\n}\n",
+          "encoding": "utf-8",
+          "filename": "patch.cpp"
+        }
+      ],
+      "description": "Formats a color as a 6-digit hexadecimal value (ex.: \"FF3300\")",
+      "nodes": {
+        "S1YduQsj7": {
+          "id": "S1YduQsj7",
+          "position": {
+            "x": 0,
+            "y": 204
+          },
+          "type": "xod/patch-nodes/output-string"
+        },
+        "SyIDdXijQ": {
+          "id": "SyIDdXijQ",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "type": "@/input-color"
+        },
+        "rJU8x4soX": {
+          "id": "rJU8x4soX",
+          "position": {
+            "x": 0,
+            "y": 102
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        }
+      },
+      "path": "@/format-color"
+    },
+    "@/to-hsl": {
+      "attachments": [
+        {
+          "content": "\nstruct State {\n};\n\n// clang-format off\n{{ GENERATED_CODE }}\n// clang-format on\n\nvoid evaluate(Context ctx) {\n\n    auto color = getValue<input_IN>(ctx);\n    float r = color.r / 255.0f;\n\tfloat g = color.g / 255.0f;\n\tfloat b = color.b / 255.0f;\n\n\tfloat _min = min(min(r, g), b);\n\tfloat _max = max(max(r, g), b);\n\tfloat delta = _max - _min;\n\n    float L, S;\n    float hue;\n\n    L = (_max + _min) / 2;\n\n    if (delta == 0){\n        hue = 0;\n        S = 0;\n    } else {\n\t\tS = (L <= 0.5) ? (delta / (_max + _min)) : (delta / (2 - _max - _min));\n\n\t\tif (r == _max) {\n\t\t\thue = ((g - b) / 6) / delta;\n\t\t} else if (g == _max) {\n\t\t\thue = (1.0f / 3) + ((b - r) / 6) / delta;\n\t\t} else {\n\t\t\thue = (2.0f / 3) + ((r - g) / 6) / delta;\n\t\t}\n\n\t\tif (hue < 0)\n\t\t\thue += 1;\n\t\tif (hue > 1)\n\t\t\thue -= 1;\n\n    }\n    emitValue<output_H>(ctx, hue);\n    emitValue<output_S>(ctx, S);\n    emitValue<output_L>(ctx, L);\n}\n\n",
+          "encoding": "utf-8",
+          "filename": "patch.cpp"
+        }
+      ],
+      "description": "Destructs a color value to hue, saturation, and lightness values. See color-hsl docs for more details",
+      "nodes": {
+        "Hkq4azoom": {
+          "description": "Saturation",
+          "id": "Hkq4azoom",
+          "label": "S",
+          "position": {
+            "x": 68,
+            "y": 204
+          },
+          "type": "xod/patch-nodes/output-number"
+        },
+        "S1PNaMjsX": {
+          "description": "Hue",
+          "id": "S1PNaMjsX",
+          "label": "H",
+          "position": {
+            "x": 0,
+            "y": 204
+          },
+          "type": "xod/patch-nodes/output-number"
+        },
+        "SJyVaGjsQ": {
+          "id": "SJyVaGjsQ",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "type": "@/input-color"
+        },
+        "SkeqVaziom": {
+          "description": "Lightness",
+          "id": "SkeqVaziom",
+          "label": "L",
+          "position": {
+            "x": 136,
+            "y": 204
+          },
+          "type": "xod/patch-nodes/output-number"
+        },
+        "rkeH6fsiX": {
+          "id": "rkeH6fsiX",
+          "position": {
+            "x": 0,
+            "y": 102
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        }
+      },
+      "path": "@/to-hsl"
+    },
+    "@/to-rgb": {
+      "description": "Destructs a color value into red, green, and blue components. Each component is in range [0, 1]",
+      "links": {
+        "BJz_i-jiQ": {
+          "id": "BJz_i-jiQ",
+          "input": {
+            "nodeId": "SJWqGi-jo7",
+            "pinKey": "HJjEe1lnb"
+          },
+          "output": {
+            "nodeId": "BJeOvsbism",
+            "pinKey": "Sk43MO-Jm"
+          }
+        },
+        "H1ldobsiX": {
+          "id": "H1ldobsiX",
+          "input": {
+            "nodeId": "BJeOvsbism",
+            "pinKey": "S113G_ZJm"
+          },
+          "output": {
+            "nodeId": "r13HiWoj7",
+            "pinKey": "S1ER4-isX"
+          }
+        },
+        "H1pvjWojQ": {
+          "id": "H1pvjWojQ",
+          "input": {
+            "nodeId": "By5GsWjs7",
+            "pinKey": "HJjEe1lnb"
+          },
+          "output": {
+            "nodeId": "B14Poboo7",
+            "pinKey": "Sk43MO-Jm"
+          }
+        },
+        "HJJOs-sjm": {
+          "id": "HJJOs-sjm",
+          "input": {
+            "nodeId": "S1uwoWoim",
+            "pinKey": "S113G_ZJm"
+          },
+          "output": {
+            "nodeId": "r13HiWoj7",
+            "pinKey": "Sk7AV-ijX"
+          }
+        },
+        "HJaXi-ioX": {
+          "id": "HJaXi-ioX",
+          "input": {
+            "nodeId": "ByzXjZjjX",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "HJx5fjWjo7",
+            "pinKey": "rJFmgJehW"
+          }
+        },
+        "HkiDjbism": {
+          "id": "HkiDjbism",
+          "input": {
+            "nodeId": "HJx5fjWjo7",
+            "pinKey": "HJjEe1lnb"
+          },
+          "output": {
+            "nodeId": "S1uwoWoim",
+            "pinKey": "Sk43MO-Jm"
+          }
+        },
+        "HyRDsWisQ": {
+          "id": "HyRDsWisQ",
+          "input": {
+            "nodeId": "B14Poboo7",
+            "pinKey": "S113G_ZJm"
+          },
+          "output": {
+            "nodeId": "r13HiWoj7",
+            "pinKey": "S1Z04Zjsm"
+          }
+        },
+        "SkoXoZooQ": {
+          "id": "SkoXoZooQ",
+          "input": {
+            "nodeId": "SJKyjZjim",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "By5GsWjs7",
+            "pinKey": "rJFmgJehW"
+          }
+        },
+        "SkxLsZisX": {
+          "id": "SkxLsZisX",
+          "input": {
+            "nodeId": "r13HiWoj7",
+            "pinKey": "BkepNZjsQ"
+          },
+          "output": {
+            "nodeId": "HkbyibsjQ",
+            "pinKey": "__out__"
+          }
+        },
+        "SkyVi-som": {
+          "id": "SkyVi-som",
+          "input": {
+            "nodeId": "B1efXsbiom",
+            "pinKey": "__in__"
+          },
+          "output": {
+            "nodeId": "SJWqGi-jo7",
+            "pinKey": "rJFmgJehW"
+          }
+        }
+      },
+      "nodes": {
+        "B14Poboo7": {
+          "id": "B14Poboo7",
+          "position": {
+            "x": -136,
+            "y": 102
+          },
+          "type": "xod/bits/u8-to-number"
+        },
+        "B1efXsbiom": {
+          "description": "Blue",
+          "id": "B1efXsbiom",
+          "label": "B",
+          "position": {
+            "x": 272,
+            "y": 306
+          },
+          "type": "xod/patch-nodes/output-number"
+        },
+        "BJeOvsbism": {
+          "id": "BJeOvsbism",
+          "position": {
+            "x": 272,
+            "y": 102
+          },
+          "type": "xod/bits/u8-to-number"
+        },
+        "By5GsWjs7": {
+          "boundLiterals": {
+            "B1rSeJlnZ": "255",
+            "HkFBgJehW": "1"
+          },
+          "id": "By5GsWjs7",
+          "position": {
+            "x": -136,
+            "y": 204
+          },
+          "type": "xod/math/map-clip"
+        },
+        "ByzXjZjjX": {
+          "description": "Green",
+          "id": "ByzXjZjjX",
+          "label": "G",
+          "position": {
+            "x": 68,
+            "y": 306
+          },
+          "type": "xod/patch-nodes/output-number"
+        },
+        "HJx5fjWjo7": {
+          "boundLiterals": {
+            "B1rSeJlnZ": "255",
+            "HkFBgJehW": "1"
+          },
+          "id": "HJx5fjWjo7",
+          "position": {
+            "x": 68,
+            "y": 204
+          },
+          "type": "xod/math/map-clip"
+        },
+        "HkbyibsjQ": {
+          "id": "HkbyibsjQ",
+          "position": {
+            "x": 34,
+            "y": -102
+          },
+          "type": "@/input-color"
+        },
+        "S1uwoWoim": {
+          "id": "S1uwoWoim",
+          "position": {
+            "x": 68,
+            "y": 102
+          },
+          "type": "xod/bits/u8-to-number"
+        },
+        "SJKyjZjim": {
+          "description": "Red",
+          "id": "SJKyjZjim",
+          "label": "R",
+          "position": {
+            "x": -136,
+            "y": 306
+          },
+          "type": "xod/patch-nodes/output-number"
+        },
+        "SJWqGi-jo7": {
+          "boundLiterals": {
+            "B1rSeJlnZ": "255",
+            "HkFBgJehW": "1"
+          },
+          "id": "SJWqGi-jo7",
+          "position": {
+            "x": 272,
+            "y": 204
+          },
+          "type": "xod/math/map-clip"
+        },
+        "r13HiWoj7": {
+          "id": "r13HiWoj7",
+          "position": {
+            "x": 34,
+            "y": 0
+          },
+          "type": "@/to-rgb-bytes"
+        }
+      },
+      "path": "@/to-rgb"
+    },
+    "@/to-rgb-bytes": {
+      "attachments": [
+        {
+          "content": "\nstruct State {\n};\n\n// clang-format off\n{{ GENERATED_CODE }}\n// clang-format on\n\nvoid evaluate(Context ctx) {\n    auto color = getValue<input_IN>(ctx);\n    emitValue<output_R>(ctx, color.r);\n    emitValue<output_G>(ctx, color.g);\n    emitValue<output_B>(ctx, color.b);\n}\n",
+          "encoding": "utf-8",
+          "filename": "patch.cpp"
+        }
+      ],
+      "description": "Destructs a color value into red, green, and blue components encoded as byte values",
+      "nodes": {
+        "BkepNZjsQ": {
+          "id": "BkepNZjsQ",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "type": "@/input-color"
+        },
+        "S1ER4-isX": {
+          "description": "Blue",
+          "id": "S1ER4-isX",
+          "label": "B",
+          "position": {
+            "x": 136,
+            "y": 204
+          },
+          "type": "xod/patch-nodes/output-byte"
+        },
+        "S1Z04Zjsm": {
+          "description": "Red",
+          "id": "S1Z04Zjsm",
+          "label": "R",
+          "position": {
+            "x": 0,
+            "y": 204
+          },
+          "type": "xod/patch-nodes/output-byte"
+        },
+        "Sk7AV-ijX": {
+          "description": "Green",
+          "id": "Sk7AV-ijX",
+          "label": "G",
+          "position": {
+            "x": 68,
+            "y": 204
+          },
+          "type": "xod/patch-nodes/output-byte"
+        },
+        "rym6VWsim": {
+          "id": "rym6VWsim",
+          "position": {
+            "x": 0,
+            "y": 102
+          },
+          "type": "xod/patch-nodes/not-implemented-in-xod"
+        }
+      },
+      "path": "@/to-rgb-bytes"
+    }
+  }
+}
